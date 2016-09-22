@@ -25,7 +25,7 @@ int generate()
     float rend = rand() % 20 ;
     float mid = (rand() % int(theight - theight/2)) + theight;
 
-    //set 
+    //set 5 points 
     linepoints.push_back({-twidth/2,rstart});
     linepoints.push_back({-twidth/4,rend});
     linepoints.push_back({0,mid});
@@ -53,7 +53,6 @@ void genpoints()
     int size;
     int position;
     float xpoint, ypoint;
-    double gaus;
 
     // initilize it to beginning of vector
     vector<point>::iterator it = linepoints.begin();
@@ -103,7 +102,7 @@ void drawTerrain(int bumpup)
     int size = linepoints.size();
     for(int i = 0; i < size-1; i++)
     {
-	glColor3f( 1.0, 0.0, 0.0);
+	glColor3f( 0.0, 1.0, 0.0);
         glBegin( GL_LINES );
 	    glVertex2f( linepoints[i].x , linepoints[i].y + bumpup );
 	    glVertex2f( linepoints[i+1].x , linepoints[i+1].y + bumpup);
@@ -154,9 +153,9 @@ double genrandom()
  *
  * *************************************/
 
-int randomnum( int x, int y )
+float randomnum( float x, float y )
 {
-    int rnum, hi, lo;
+    float rnum, hi, lo;
     if( x < y )
     {
 	lo = x;
@@ -168,7 +167,7 @@ int randomnum( int x, int y )
 	hi = x;
     }
     //generate random number between two values
-    rnum = (rand() % ( hi - lo )) + lo; 
+    rnum = (rand() % int( hi - lo )) + lo; 
 
     return rnum;	
 }

@@ -5,12 +5,18 @@
 using namespace std;
 
 #include <GL/freeglut.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 #include "drawingfuncs.h"
 
-void drawDash(int player, int velocity, int angle, int ScreenWidth, int ScreenHeight);
-void drawAngle();
-void drawVelocity();
-void drawPlayer();
+static int SWidth, SHeight;
+
+void initDash(int ScreenWidth, int ScreenHeight);
+void drawDash(int player, int velocity, int angle);
+void drawAngle(int angle);
+void drawVelocity(int velocity);
+void drawPlayer(const char *string, int player);
 
 #endif

@@ -6,7 +6,7 @@ using namespace std;
 
 #include <math.h>
 #include <GL/freeglut.h>
-
+void DrawLine( float x1, float y1, float x2, float y2, const float colot[] );
 void DrawRectangle( float x1, float y1, float x2, float y2, const float color[] );
 void DrawFilledRectangle( float x1, float y1, float x2, float y2, const float color[] );
 void DrawQuarterEllipse(float x1, float y1, float x2, float y2, const float color[]);

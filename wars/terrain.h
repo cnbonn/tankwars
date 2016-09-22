@@ -17,13 +17,15 @@ static float theight;
 static float troughness;
 static int tsmoothness;	
 
+// structure for points
 struct point
 {
     float x;
     float y;
 };
-static vector<point> linepoints;
+static vector<point> linepoints; // vector for points
 
+//functions
 void initTerrain(float w, float h,float r, int s);     
 int generate();
 void genpoints();
@@ -31,6 +33,6 @@ void drawTerrain(int bumpup);
 void print();
 void printPoints();
 double genrandom();
-int randomnum(int x, int y);
+float randomnum(float x, float y);
 
 #endif
