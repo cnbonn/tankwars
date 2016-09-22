@@ -40,7 +40,7 @@ tankwars:	tankwars.o
 	$(LINK) -o $@ $^ $(GL_LIBS)
 
 # typical target entry, builds "myprog" from file1.cpp, file2.cpp, file3.cpp
-myprog:	tankwars.o terrain.o
+myprog:	tankwars.o terrain.o dash.o drawingfuncs.o
 	$(LINK) -o $@ $^ $(GL_LIBS)
 
 # generic C and C++ targets for OpenGL programs consisting of only one file

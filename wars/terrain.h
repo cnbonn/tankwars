@@ -9,32 +9,28 @@ using namespace std;
 #include <stdlib.h>
 #include <tuple>
 #include <cmath>
+#include <GL/freeglut.h>
+#include <random>
 
-class Terrain
+static float twidth;
+static float theight;
+static float troughness;
+static int tsmoothness;	
+
+struct point
 {
-    private:
-	float width;
-	float height;
-	float displacement;
-	float roughness;
-        int smoothness;	
-
-	struct point
-	{
-	    float x;
-	    float y;
-	};
-        vector<point> linepoints;
-    
-    public:
-	Terrain(); //constuctor
-	Terrain(float w, float h, float d, float r, int s); //copy constructor
-	~Terrain(); //deconstructor
-	int generate();
-	void genpoints();
-	void draw();
-	void print();
-	void printPoints();
+    float x;
+    float y;
 };
+static vector<point> linepoints;
+
+void initTerrain(float w, float h,float r, int s);     
+int generate();
+void genpoints();
+void drawTerrain(int bumpup);
+void print();
+void printPoints();
+double genrandom();
+int randomnum(int x, int y);
 
 #endif

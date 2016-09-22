@@ -1,116 +1,129 @@
 #include "terrain.h"
-
-Terrain::Terrain()
+/************************************************8
+ * init call to save values for the terrain
+ *
+ * ****************************************************/
+void initTerrain(float w, float h, float r, int s)
 {
-    width = 0;
-    height = 0;
-    displacement = 0;
-    roughness = 0;
-    smoothness = 0;
-    cerr << "blank name created" << endl;
-}
-
-Terrain::~Terrain()
-{
-    linepoints.clear();
-}
-
-Terrain::Terrain(float w, float h, float d, float r, int s)
-{
-    width = w;
-    height = h;
-    displacement = d;
-    roughness = r;
-    smoothness = s;
+    twidth = w;
+    theight = h;
+    troughness = r;
+    tsmoothness = s;
 	
     generate();
 }
-
-int Terrain::generate()
+/************************************8
+ *
+ * starts the generation of values
+ * for the terrain by seeiding 3 values
+ * **********************************/
+int generate()
 {
     //generate random number
     srand(time(NULL));
-    float rstart = rand() % 20; 
-    float rend = rand () % 20;
+    float rstart = rand() % 20 ; 
+    float rend = rand() % 20 ;
+    float mid = (rand() % int(theight - theight/2)) + theight;
 
     //set 
-    linepoints.push_back({0,rstart});
-    linepoints.push_back({width/2,displacement});
-    linepoints.push_back({width, rend});
+    linepoints.push_back({-twidth/2,rstart});
+    linepoints.push_back({-twidth/4,rend});
+    linepoints.push_back({0,mid});
+    linepoints.push_back({twidth/4, rstart});
+    linepoints.push_back({twidth/2, rend});
 
     genpoints();
 
     return 1;
 }
-
-void Terrain::genpoints()
+/***********************************************
+ * generates random points for the terrain using the
+ * midpoint displacement algorithm given in the book
+ *
+ *
+ *
+ * smoothness - number of points in the terrain
+ * roughness - height difference between points
+ *
+ *
+ ************************************************/
+void genpoints()
 {   
     // create more points
     int size;
     int position;
     float xpoint, ypoint;
+    double gaus;
 
     // initilize it to beginning of vector
     vector<point>::iterator it = linepoints.begin();
     
     //create random
     srand(time(NULL));
+    float random;
 
-    for(int j = 0; j < smoothness; j++)
+    for(int j = 0; j < tsmoothness; j++)
     {
+	// generate roughness
+	  
         size = linepoints.size(); //set loop to size of vector
         position = 1; // reset positon
         for(int i = 1 ; i < size ; i++)
         {
 	    it++;
-	    //get x value
-            xpoint = (linepoints[position].x - linepoints[position-1].x)/2;
-	    xpoint = xpoint + linepoints[position-1].x;
-	    //get y value
-	    ypoint = abs((linepoints[position].y - linepoints[position-1].y)/2);
-            //tecelate
-            ypoint += (rand() % int(roughness)) - roughness;
+	    // find midpoint between two x values
+            xpoint = (linepoints[position].x + linepoints[position-1].x)/2;
+	    //xpoint = xpoint + linepoints[position-1].x;
+
+	    //find midpoint between two y values
+	    random = randomnum(linepoints[position].y, linepoints[position-1].y);
+	    ypoint = (linepoints[position].y + linepoints[position-1].y)/2 + random;
+	    
+	    if( ypoint < 0 ) // make sure y value does not go though floor
+		ypoint = 0;
+
 	    //save points
             linepoints.insert(it , point{xpoint,ypoint});
             it++; 
 	    position += 2;	
         }
 	it = linepoints.begin(); //reset it to beginning of vector
-	printPoints();
     }
 }
-
-void Terrain::draw()
+/****************************************
+ * loop though the vector that contains the terrain
+ * and using GL_LINE draw the terrain to the screen
+ *
+ * int bumpup - amount to move the bottom of the 
+ * 		terrain up from the bottom of the 
+ * 		screen
+ * **********************************************/
+void drawTerrain(int bumpup)
 {
-    size = linepoints.size();
-    for(int i = 0; i < size; i++)
+    int size = linepoints.size();
+    for(int i = 0; i < size-1; i++)
     {
 	glColor3f( 1.0, 0.0, 0.0);
         glBegin( GL_LINES );
-	    glVertex2f( linepoints[i].x, linepoints[i].y );
-	    glVertex2f( linepoints[i+1].x, linepoints[i+1].y );
+	    glVertex2f( linepoints[i].x , linepoints[i].y + bumpup );
+	    glVertex2f( linepoints[i+1].x , linepoints[i+1].y + bumpup);
 	glEnd();
     }
 }
 
-
-void Terrain::print()
-{
-    cerr << "terrain" << endl;
-    cerr << "\twidth:        " << width << endl;
-    cerr << "\theight:       " << height << endl;
-    cerr << "\tdisplacement: " << displacement << endl;
-    cerr << "\troughness:    " << roughness << endl;
-}
-
-void Terrain::printPoints()
+/*********************************8
+ *
+ *  print points in the terrain held in the 
+ *  vector line points
+ *
+ *  **********************************/
+void printPoints()
 {
     cerr << "terrain contents" << endl;
     int points = linepoints.size();
     cerr << " points: "<< points << endl;
     for(int i = 0; i < points; i++)
     {
-	//cerr << "(" << i << "'" << linepoints[i] << ")";
 	fprintf(stderr, "(%3i,%3i)", int(linepoints[i].x) , int(linepoints[i].y));
 	if((i+1) % 10 == 0)
 	{
@@ -120,5 +133,44 @@ void Terrain::printPoints()
     cerr << endl;
     
 }
+/*******************************
+ * generate random gausian value
+ *
+ * ***************************/
+double genrandom()
+{
+    //see gen 
+    default_random_engine generator(rand()%10);
+    normal_distribution<double> distribution(0.0,sqrt(1.0));
+    double val = distribution(generator);
 
+    return val;
+}
 
+/***************************************
+ * 
+ *  Generate a random value between two points
+ *  given as arguments
+ *
+ * *************************************/
+
+int randomnum( int x, int y )
+{
+    int rnum, hi, lo;
+    if( x < y )
+    {
+	lo = x;
+	hi = y;
+    }
+    else
+    {
+	lo = y;
+	hi = x;
+    }
+    //generate random number between two values
+    rnum = (rand() % ( hi - lo )) + lo; 
+
+    return rnum;	
+}
+
+ 
