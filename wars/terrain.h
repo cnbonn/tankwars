@@ -9,6 +9,7 @@ using namespace std;
 #include <stdlib.h>
 #include <tuple>
 #include <cmath>
+#include <math.h>
 #include <GL/freeglut.h>
 #include <random>
 
@@ -34,5 +35,6 @@ void print();
 void printPoints();
 double genrandom();
 float randomnum(float x, float y);
+float findy( float x );
 
 #endif

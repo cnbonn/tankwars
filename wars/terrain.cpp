@@ -137,7 +137,7 @@ void printPoints()
  *
  * ***************************/
 double genrandom()
-{
+	{
     //see gen 
     default_random_engine generator(rand()%10);
     normal_distribution<double> distribution(0.0,sqrt(1.0));
@@ -172,4 +172,55 @@ float randomnum( float x, float y )
     return rnum;	
 }
 
+/*******************************************8
+ *
+ * calculate y value for the x value 
+ *
+ * ***************************************/
+float findy( float x )
+{
+    int i = 0;
+    float bottom, top;
+    float slope, ypoint;
+
+    cerr << " x value: " << x << endl;
+    while( linepoints[i].x < x )
+    {
+//	cerr << "prev points" << linepoints[i].x << endl;
+	i++;
+    }	
+    cerr << "stop point: " << linepoints[i].x << endl;
+    cerr << " xpoint1: " << linepoints[i-1].x << " xline2: " << linepoints[i].x << endl;
+    cerr << " ypoint1: " << linepoints[i-1].y << " yline2: " << linepoints[i].y << endl;
+    if( linepoints[i].x == x)
+    {
+	cerr << "ypoint: " << linepoints[i].y << endl;
+	return linepoints[i].y;
+    }
+    else
+    {
+	if(linepoints[i].y > linepoints[i-1].y)
+	{
+	    // calculate slope from 2 points
+	    bottom = (linepoints[i].x - linepoints[i-1].x);
+            top =(linepoints[i].y - linepoints[i-1].y);
+	     slope = top/bottom;
+	
+           	cerr << "slope+: " << slope << endl;
+	    ypoint = (slope * (x - linepoints[i-1].x)) + linepoints[i-1].y;
+	}
+        else
+	{
+		bottom = ( linepoints[i-1].x - linepoints[i].x);
+		top = ( linepoints[i-1].y - linepoints[i].y);
+		slope = top/bottom;
+		cerr << "slope-: " << slope << endl;
+		ypoint = slope * (x - linepoints[i].x) + linepoints[i].y;
+	}
+
+	
+    }
+    cerr << "ypoint: " << ypoint << endl; 
+    return ypoint;
+}
  

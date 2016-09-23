@@ -7,9 +7,10 @@ using namespace std;
 #include <GL/freeglut.h>
 
 #include "drawingfuncs.h"
+#include "terrain.h"
 
 void initTank();
-void drawTank(int x);
-int calcHeight();
+void drawTank(int x, int bumpup);
+int calcHeight(int x);
 
 #endif

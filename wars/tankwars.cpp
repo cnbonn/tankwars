@@ -88,8 +88,8 @@ void display( void )
     
     drawTerrain(150);
     drawDash( player, velosity[player], angle[player]);
-    drawTank( position[0] );   //draw player 1
-    drawTank( position[1] );   //draw player 2
+    drawTank( position[0], 150 );   //draw player 1
+   // drawTank( position[1], 150 );   //draw player 2
 
     glutSwapBuffers();
     glFlush();

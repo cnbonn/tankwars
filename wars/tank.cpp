@@ -23,12 +23,14 @@ void initTank()
  * the centerpoint of the tank
  *
  * *******************************/
-void drawTank(int x)
+void drawTank(int x, int bumpup)
 {
     int y = 200;
-    DrawFilledRectangle( x - 10, y - 4 , x + 10, y + 4, Red );
-    DrawFilledRectangle( x - 3 , y + 4 , x + 3 , y + 10, Red );
-    DrawLine( x , y + 6, x + 11, y + 11, Red); 
+    y = calcHeight(x);
+
+    DrawFilledRectangle( x - 10, y - 4 + bumpup, x + 10, y + 4 + bumpup, Red );
+    DrawFilledRectangle( x - 3 , y + 4 + bumpup , x + 3 , y + 10 +bumpup, Red );
+    DrawLine( x , y + 6 +bumpup, x + 11, y + 11 +bumpup, Red); 
     glFlush();   
 }
 /************************************
@@ -38,7 +40,20 @@ void drawTank(int x)
  *
  * *********************************/
 
-int calcHeight()
+int calcHeight(int x)
 {
-    return 1;
+    /*
+    //y = screenheight;
+    GLuint seedcolor;
+    GLuint readcolor;
+    glReadPixels( 200 , 200, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &seedcolor );
+
+    cerr << "seed color: " << seedcolor << endl;
+
+    for( int i = 800; i > 0; i-- )
+    {
+	glReadPixels( x, i, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &readcolor );
+	cerr << "read color " << readcolor << endl;
+    } */
+    return findy( x );
 }
